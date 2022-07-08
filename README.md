@@ -230,7 +230,7 @@ from pathlib import Path
 
 from moodle_toml.parser import to_xml
 
-xml = to_xml(Path("playground/questions"))
+xml = to_xml(Path("questions"))
 with open("import.xml", "w") as f:
     f.write(xml)
 ```
