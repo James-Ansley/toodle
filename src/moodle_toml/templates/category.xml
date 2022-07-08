@@ -1,0 +1,9 @@
+<question type="category">
+    <category>
+        <text>{{ category_name }}</text>
+    </category>
+    <info format="html">
+        <text></text>
+    </info>
+    <idnumber></idnumber>
+</question>

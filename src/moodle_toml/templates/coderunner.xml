@@ -1,0 +1,85 @@
+<question type="coderunner">
+    <name>
+        <text>{{ name }}</text>
+    </name>
+    <coderunnertype>{{ coderunnertype }}</coderunnertype>
+    <precheck>{{ precheck }}</precheck>
+    <questiontext format="html">
+        <text><![CDATA[{{ prompt }}]]></text>
+    </questiontext>
+    <answer><![CDATA[{{ answer }}]]></answer>
+    <answerboxlines>{{ answer_lines }}</answerboxlines>
+    <generalfeedback format="html">
+        <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.0000000</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <prototypetype>0</prototypetype>
+    <allornothing>1</allornothing>
+    <penaltyregime>0, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50</penaltyregime>
+    <hidecheck>0</hidecheck>
+    <showsource>0</showsource>
+    <answerboxcolumns>100</answerboxcolumns>
+    <answerpreload></answerpreload>
+    <globalextra></globalextra>
+    <useace></useace>
+    <resultcolumns></resultcolumns>
+    <template></template>
+    <iscombinatortemplate></iscombinatortemplate>
+    <allowmultiplestdins></allowmultiplestdins>
+    <validateonsave>1</validateonsave>
+    <testsplitterre></testsplitterre>
+    <language></language>
+    <acelang></acelang>
+    <sandbox></sandbox>
+    <grader></grader>
+    <cputimelimitsecs></cputimelimitsecs>
+    <memlimitmb></memlimitmb>
+    <sandboxparams></sandboxparams>
+    <templateparams></templateparams>
+    <hoisttemplateparams>1</hoisttemplateparams>
+    <templateparamslang>None</templateparamslang>
+    <templateparamsevalpertry>0</templateparamsevalpertry>
+    <templateparamsevald>{}</templateparamsevald>
+    <twigall>0</twigall>
+    <uiplugin></uiplugin>
+    <uiparameters></uiparameters>
+    <attachments>0</attachments>
+    <attachmentsrequired>0</attachmentsrequired>
+    <maxfilesize>10240</maxfilesize>
+    <filenamesregex></filenamesregex>
+    <filenamesexplain></filenamesexplain>
+    <displayfeedback>1</displayfeedback>
+    <giveupallowed>0</giveupallowed>
+    <testcases>
+        {% for testcase in testcases %}
+        <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
+                  mark="1.0">
+            <display>
+                <text>{{ testcase.display }}</text>
+            </display>
+            <testcode>
+                <text>{{ testcase.testcode }}</text>
+            </testcode>
+            <stdin>
+                <text>{{ testcase.stdin }}</text>
+            </stdin>
+            <expected>
+                <text>{{ testcase.expected }}</text>
+            </expected>
+            <extra>
+                <text></text>
+            </extra>
+        </testcase>
+        {% endfor %}
+    </testcases>
+    <tags>
+        {% for tag in tags %}
+        <tag>
+            <text>{{ tag }}</text>
+        </tag>
+        {% endfor %}
+    </tags>
+</question>
