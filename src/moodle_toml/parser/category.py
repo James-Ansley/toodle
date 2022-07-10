@@ -1,20 +1,24 @@
-from collections.abc import Iterable
+from functools import cached_property
+from typing import Any
 
-from jinja2 import Template
+from .question import Question
 
-from .. import TEMPLATE_DIR
-
-__all__ = ["parse"]
-
-_XML_NAME = "category.xml"
+__all__ = ["Category"]
 
 
-def parse(stem: Iterable[str]):
-    category = "/".join(stem)
-    return _set_template(category)
+class Category(Question):
+    _XML_NAME = "category.xml"
 
+    def __init__(self, *args, root, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.root = root
 
-def _set_template(category: str):
-    with open(TEMPLATE_DIR / _XML_NAME, "r") as f:
-        template = Template(f.read(), trim_blocks=True, lstrip_blocks=True)
-    return template.render(category_name=category)
+    @cached_property
+    def config(self) -> dict[str, Any]:
+        root_parts = self.root.parts
+        parts = self.question_dir.parts[len(root_parts):]
+        return {"category_name": "/".join(parts)}
+
+    @cached_property
+    def prompt(self):
+        return None

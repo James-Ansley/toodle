@@ -1,36 +1,16 @@
-from collections.abc import Mapping
-from pathlib import Path
+from functools import cached_property
+from typing import Any
 
-import tomli
-from jinja2 import Template
-from markdown import markdown
+from .question import Question
 
-from .. import TEMPLATE_DIR
-
-__all__ = ["parse"]
-
-_XML_NAME = "shortanswer.xml"
-_QUESTION_CONFIG = "config.toml"
-_PROMPT = "prompt.md"
+__all__ = ["ShortAnswer"]
 
 
-def parse(question_dir: Path):
-    data = _get_data(question_dir)
-    return _set_template(data)
+class ShortAnswer(Question):
+    _XML_NAME = "shortanswer.xml"
 
-
-def _get_data(question_dir: Path):
-    with open(question_dir / _QUESTION_CONFIG, "rb") as f:
-        config = tomli.load(f)
-    with open(question_dir / _PROMPT) as f:
-        config["prompt"] = markdown(f.read())
-
-    config['name'] = question_dir.name
-    config['case_sensitivity'] = int(config['case_sensitivity'])
-    return config
-
-
-def _set_template(data: Mapping):
-    with open(TEMPLATE_DIR / _XML_NAME, "r") as f:
-        template = Template(f.read(), trim_blocks=True, lstrip_blocks=True)
-    return template.render(**data)
+    @cached_property
+    def config(self) -> dict[str, Any]:
+        config = super().config
+        config['case_sensitivity'] = int(config['case_sensitivity'])
+        return config

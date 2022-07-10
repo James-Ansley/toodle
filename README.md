@@ -14,11 +14,11 @@ Moodle TOML also supports the Coderunner question type.
 
 ## Usage
 
-Moodle TOML provides a `parser.to_xml` function that takes the Path of a
-question suite and returns a Moodle XML file. A question suite is a directory
-structure where non-question directories are treated as categories, and
-questions are directories containing several text-based configuration files.
-These formats are described below.
+Moodle TOML provides a `parser.Quiz` class that takes the Path of a question
+suite. Calling `as_xml` on the resulting `Quiz` object will parse the directory
+as XML. A question suite is a directory structure where non-question directories
+are treated as categories, and questions are directories containing several
+text-based configuration files. These formats are described below.
 
 ### Categories
 
@@ -103,6 +103,7 @@ feedback = ''  # any string
 ### Example
 
 Consider the following directory structure:
+
 ```text
 questions
 └── rectangle
@@ -114,6 +115,7 @@ questions
 With the files:
 
 `config.toml`:
+
 ```toml
 qtype = "coderunner"
 coderunnertype = "python3_w_input"
@@ -228,9 +230,10 @@ Calling the following python program:
 ```python
 from pathlib import Path
 
-from moodle_toml.parser import to_xml
+from moodle_toml.parser import Quiz
 
-xml = to_xml(Path("questions"))
+root = Path("questions")
+xml = Quiz(root).as_xml()
 with open("import.xml", "w") as f:
     f.write(xml)
 ```
@@ -241,13 +244,13 @@ Would generate the following Moodle XML:
 <?xml version="1.0" encoding="UTF-8"?>
 <quiz>
     <question type="coderunner">
-    <name>
-        <text>rectangle</text>
-    </name>
-    <coderunnertype>python3_w_input</coderunnertype>
-    <precheck>2</precheck>
-    <questiontext format="html">
-        <text><![CDATA[<p>A rectangle's area can be calculated using the following formula:</p>
+        <name>
+            <text>rectangle</text>
+        </name>
+        <coderunnertype>python3_w_input</coderunnertype>
+        <precheck>2</precheck>
+        <questiontext format="html">
+            <text><![CDATA[<p>A rectangle's area can be calculated using the following formula:</p>
 <p>$$ area = base * height $$</p>
 <p>Write a program that prompts the user to enter the base and height of a
 rectangle in centimetres. The program should then print the area of the
@@ -256,219 +259,234 @@ rectangle to two decimal places.</p>
 message to be displayed with the rectangle area.</p>
 <p>Note: The two values entered can be floating point values and will be valid
 non-negative numbers.</p>]]></text>
-    </questiontext>
-    <answer><![CDATA[base = float(input("Enter the base of the rectangle in centimetres: "))
+        </questiontext>
+        <answer><![CDATA[base = float(input("Enter the base of the rectangle in centimetres: "))
 height = float(input("Enter the height of the rectangle in centimetres: "))
 
 area = base * height
 
 print(f"The area of the rectangle is {area:.2f}cm^2")
 ]]></answer>
-    <answerboxlines>7</answerboxlines>
-    <generalfeedback format="html">
-        <text></text>
-    </generalfeedback>
-    <defaultgrade>1.0000000</defaultgrade>
-    <penalty>0.0000000</penalty>
-    <hidden>0</hidden>
-    <idnumber></idnumber>
-    <prototypetype>0</prototypetype>
-    <allornothing>1</allornothing>
-    <penaltyregime>0, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50</penaltyregime>
-    <hidecheck>0</hidecheck>
-    <showsource>0</showsource>
-    <answerboxcolumns>100</answerboxcolumns>
-    <answerpreload></answerpreload>
-    <globalextra></globalextra>
-    <useace></useace>
-    <resultcolumns></resultcolumns>
-    <template></template>
-    <iscombinatortemplate></iscombinatortemplate>
-    <allowmultiplestdins></allowmultiplestdins>
-    <validateonsave>1</validateonsave>
-    <testsplitterre></testsplitterre>
-    <language></language>
-    <acelang></acelang>
-    <sandbox></sandbox>
-    <grader></grader>
-    <cputimelimitsecs></cputimelimitsecs>
-    <memlimitmb></memlimitmb>
-    <sandboxparams></sandboxparams>
-    <templateparams></templateparams>
-    <hoisttemplateparams>1</hoisttemplateparams>
-    <templateparamslang>None</templateparamslang>
-    <templateparamsevalpertry>0</templateparamsevalpertry>
-    <templateparamsevald>{}</templateparamsevald>
-    <twigall>0</twigall>
-    <uiplugin></uiplugin>
-    <uiparameters></uiparameters>
-    <attachments>0</attachments>
-    <attachmentsrequired>0</attachmentsrequired>
-    <maxfilesize>10240</maxfilesize>
-    <filenamesregex></filenamesregex>
-    <filenamesexplain></filenamesexplain>
-    <displayfeedback>1</displayfeedback>
-    <giveupallowed>0</giveupallowed>
-    <testcases>
-        <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
-                  mark="1.0">
-            <display>
-                <text>SHOW</text>
-            </display>
-            <testcode>
-                <text></text>
-            </testcode>
-            <stdin>
-                <text>10
-10</text>
-            </stdin>
-            <expected>
-                <text>Enter the base of the rectangle in centimetres: 10
-Enter the height of the rectangle in centimetres: 10
-The area of the rectangle is 100.00cm^2</text>
-            </expected>
-            <extra>
-                <text></text>
-            </extra>
-        </testcase>
-        <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
-                  mark="1.0">
-            <display>
-                <text>SHOW</text>
-            </display>
-            <testcode>
-                <text></text>
-            </testcode>
-            <stdin>
-                <text>12.5
-5.5</text>
-            </stdin>
-            <expected>
-                <text>Enter the base of the rectangle in centimetres: 12.5
-Enter the height of the rectangle in centimetres: 5.5
-The area of the rectangle is 68.75cm^2</text>
-            </expected>
-            <extra>
-                <text></text>
-            </extra>
-        </testcase>
-        <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
-                  mark="1.0">
-            <display>
-                <text>SHOW</text>
-            </display>
-            <testcode>
-                <text></text>
-            </testcode>
-            <stdin>
-                <text>0
-10</text>
-            </stdin>
-            <expected>
-                <text>Enter the base of the rectangle in centimetres: 0
-Enter the height of the rectangle in centimetres: 10
-The area of the rectangle is 0.00cm^2</text>
-            </expected>
-            <extra>
-                <text></text>
-            </extra>
-        </testcase>
-        <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
-                  mark="1.0">
-            <display>
-                <text>SHOW</text>
-            </display>
-            <testcode>
-                <text></text>
-            </testcode>
-            <stdin>
-                <text>100
-200</text>
-            </stdin>
-            <expected>
-                <text>Enter the base of the rectangle in centimetres: 100
-Enter the height of the rectangle in centimetres: 200
-The area of the rectangle is 20000.00cm^2</text>
-            </expected>
-            <extra>
-                <text></text>
-            </extra>
-        </testcase>
-        <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
-                  mark="1.0">
-            <display>
-                <text>SHOW</text>
-            </display>
-            <testcode>
-                <text></text>
-            </testcode>
-            <stdin>
-                <text>15
-1</text>
-            </stdin>
-            <expected>
-                <text>Enter the base of the rectangle in centimetres: 15
-Enter the height of the rectangle in centimetres: 1
-The area of the rectangle is 15.00cm^2</text>
-            </expected>
-            <extra>
-                <text></text>
-            </extra>
-        </testcase>
-        <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
-                  mark="1.0">
-            <display>
-                <text>SHOW</text>
-            </display>
-            <testcode>
-                <text></text>
-            </testcode>
-            <stdin>
-                <text>0
-0</text>
-            </stdin>
-            <expected>
-                <text>Enter the base of the rectangle in centimetres: 0
-Enter the height of the rectangle in centimetres: 0
-The area of the rectangle is 0.00cm^2</text>
-            </expected>
-            <extra>
-                <text></text>
-            </extra>
-        </testcase>
-        <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
-                  mark="1.0">
-            <display>
-                <text>HIDE</text>
-            </display>
-            <testcode>
-                <text></text>
-            </testcode>
-            <stdin>
-                <text>25
-2.5</text>
-            </stdin>
-            <expected>
-                <text>Enter the base of the rectangle in centimetres: 25
-Enter the height of the rectangle in centimetres: 2.5
-The area of the rectangle is 62.50cm^2</text>
-            </expected>
-            <extra>
-                <text></text>
-            </extra>
-        </testcase>
-    </testcases>
-    <tags>
-        <tag>
-            <text>beginner</text>
-        </tag>
-        <tag>
-            <text>linear math</text>
-        </tag>
-        <tag>
-            <text>area calculation</text>
-        </tag>
-    </tags>
-</question>
+        <answerboxlines>7</answerboxlines>
+        <generalfeedback format="html">
+            <text></text>
+        </generalfeedback>
+        <defaultgrade>1.0000000</defaultgrade>
+        <penalty>0.0000000</penalty>
+        <hidden>0</hidden>
+        <idnumber></idnumber>
+        <prototypetype>0</prototypetype>
+        <allornothing>1</allornothing>
+        <penaltyregime>0, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50
+        </penaltyregime>
+        <hidecheck>0</hidecheck>
+        <showsource>0</showsource>
+        <answerboxcolumns>100</answerboxcolumns>
+        <answerpreload></answerpreload>
+        <globalextra></globalextra>
+        <useace></useace>
+        <resultcolumns></resultcolumns>
+        <template></template>
+        <iscombinatortemplate></iscombinatortemplate>
+        <allowmultiplestdins></allowmultiplestdins>
+        <validateonsave>1</validateonsave>
+        <testsplitterre></testsplitterre>
+        <language></language>
+        <acelang></acelang>
+        <sandbox></sandbox>
+        <grader></grader>
+        <cputimelimitsecs></cputimelimitsecs>
+        <memlimitmb></memlimitmb>
+        <sandboxparams></sandboxparams>
+        <templateparams></templateparams>
+        <hoisttemplateparams>1</hoisttemplateparams>
+        <templateparamslang>None</templateparamslang>
+        <templateparamsevalpertry>0</templateparamsevalpertry>
+        <templateparamsevald>{}</templateparamsevald>
+        <twigall>0</twigall>
+        <uiplugin></uiplugin>
+        <uiparameters></uiparameters>
+        <attachments>0</attachments>
+        <attachmentsrequired>0</attachmentsrequired>
+        <maxfilesize>10240</maxfilesize>
+        <filenamesregex></filenamesregex>
+        <filenamesexplain></filenamesexplain>
+        <displayfeedback>1</displayfeedback>
+        <giveupallowed>0</giveupallowed>
+        <testcases>
+            <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
+                      mark="1.0">
+                <display>
+                    <text>SHOW</text>
+                </display>
+                <testcode>
+                    <text></text>
+                </testcode>
+                <stdin>
+                    <text>10
+                        10
+                    </text>
+                </stdin>
+                <expected>
+                    <text>Enter the base of the rectangle in centimetres: 10
+                        Enter the height of the rectangle in centimetres: 10
+                        The area of the rectangle is 100.00cm^2
+                    </text>
+                </expected>
+                <extra>
+                    <text></text>
+                </extra>
+            </testcase>
+            <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
+                      mark="1.0">
+                <display>
+                    <text>SHOW</text>
+                </display>
+                <testcode>
+                    <text></text>
+                </testcode>
+                <stdin>
+                    <text>12.5
+                        5.5
+                    </text>
+                </stdin>
+                <expected>
+                    <text>Enter the base of the rectangle in centimetres: 12.5
+                        Enter the height of the rectangle in centimetres: 5.5
+                        The area of the rectangle is 68.75cm^2
+                    </text>
+                </expected>
+                <extra>
+                    <text></text>
+                </extra>
+            </testcase>
+            <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
+                      mark="1.0">
+                <display>
+                    <text>SHOW</text>
+                </display>
+                <testcode>
+                    <text></text>
+                </testcode>
+                <stdin>
+                    <text>0
+                        10
+                    </text>
+                </stdin>
+                <expected>
+                    <text>Enter the base of the rectangle in centimetres: 0
+                        Enter the height of the rectangle in centimetres: 10
+                        The area of the rectangle is 0.00cm^2
+                    </text>
+                </expected>
+                <extra>
+                    <text></text>
+                </extra>
+            </testcase>
+            <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
+                      mark="1.0">
+                <display>
+                    <text>SHOW</text>
+                </display>
+                <testcode>
+                    <text></text>
+                </testcode>
+                <stdin>
+                    <text>100
+                        200
+                    </text>
+                </stdin>
+                <expected>
+                    <text>Enter the base of the rectangle in centimetres: 100
+                        Enter the height of the rectangle in centimetres: 200
+                        The area of the rectangle is 20000.00cm^2
+                    </text>
+                </expected>
+                <extra>
+                    <text></text>
+                </extra>
+            </testcase>
+            <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
+                      mark="1.0">
+                <display>
+                    <text>SHOW</text>
+                </display>
+                <testcode>
+                    <text></text>
+                </testcode>
+                <stdin>
+                    <text>15
+                        1
+                    </text>
+                </stdin>
+                <expected>
+                    <text>Enter the base of the rectangle in centimetres: 15
+                        Enter the height of the rectangle in centimetres: 1
+                        The area of the rectangle is 15.00cm^2
+                    </text>
+                </expected>
+                <extra>
+                    <text></text>
+                </extra>
+            </testcase>
+            <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
+                      mark="1.0">
+                <display>
+                    <text>SHOW</text>
+                </display>
+                <testcode>
+                    <text></text>
+                </testcode>
+                <stdin>
+                    <text>0
+                        0
+                    </text>
+                </stdin>
+                <expected>
+                    <text>Enter the base of the rectangle in centimetres: 0
+                        Enter the height of the rectangle in centimetres: 0
+                        The area of the rectangle is 0.00cm^2
+                    </text>
+                </expected>
+                <extra>
+                    <text></text>
+                </extra>
+            </testcase>
+            <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
+                      mark="1.0">
+                <display>
+                    <text>HIDE</text>
+                </display>
+                <testcode>
+                    <text></text>
+                </testcode>
+                <stdin>
+                    <text>25
+                        2.5
+                    </text>
+                </stdin>
+                <expected>
+                    <text>Enter the base of the rectangle in centimetres: 25
+                        Enter the height of the rectangle in centimetres: 2.5
+                        The area of the rectangle is 62.50cm^2
+                    </text>
+                </expected>
+                <extra>
+                    <text></text>
+                </extra>
+            </testcase>
+        </testcases>
+        <tags>
+            <tag>
+                <text>beginner</text>
+            </tag>
+            <tag>
+                <text>linear math</text>
+            </tag>
+            <tag>
+                <text>area calculation</text>
+            </tag>
+        </tags>
+    </question>
 </quiz>
 ```

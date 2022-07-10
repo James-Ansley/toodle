@@ -6,6 +6,13 @@
     <precheck>{{ precheck }}</precheck>
     <questiontext format="html">
         <text><![CDATA[{{ prompt }}]]></text>
+        {% for image in images %}
+            <file
+                    name="{{ image.name }}"
+                    path="/"
+                    encoding="base64"
+            >{{ image.data }}</file>
+        {% endfor %}
     </questiontext>
     <answer><![CDATA[{{ answer }}]]></answer>
     <answerboxlines>{{ answer_lines }}</answerboxlines>
@@ -55,31 +62,38 @@
     <giveupallowed>0</giveupallowed>
     <testcases>
         {% for testcase in testcases %}
-        <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
-                  mark="1.0">
-            <display>
-                <text>{{ testcase.display }}</text>
-            </display>
-            <testcode>
-                <text>{{ testcase.testcode }}</text>
-            </testcode>
-            <stdin>
-                <text>{{ testcase.stdin }}</text>
-            </stdin>
-            <expected>
-                <text>{{ testcase.expected }}</text>
-            </expected>
-            <extra>
-                <text></text>
-            </extra>
-        </testcase>
+            <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
+                      mark="1.0">
+                <display>
+                    <text>{{ testcase.display }}</text>
+                </display>
+                <testcode>
+                    <text>{{ testcase.testcode }}</text>
+                </testcode>
+                <stdin>
+                    <text>{{ testcase.stdin }}</text>
+                </stdin>
+                <expected>
+                    <text>{{ testcase.expected }}</text>
+                </expected>
+                <extra>
+                    <text></text>
+                </extra>
+            </testcase>
+        {% endfor %}
+        {% for file in support_files %}
+            <file
+                    name="{{ file.name }}"
+                    path="/"
+                    encoding="base64"
+            >{{ file.data }}</file>
         {% endfor %}
     </testcases>
     <tags>
         {% for tag in tags %}
-        <tag>
-            <text>{{ tag }}</text>
-        </tag>
+            <tag>
+                <text>{{ tag }}</text>
+            </tag>
         {% endfor %}
     </tags>
 </question>
