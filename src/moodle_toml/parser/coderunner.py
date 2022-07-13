@@ -39,9 +39,9 @@ class Coderunner(Question):
         config["name"] = self.name
         config["precheck"] = self._PRECHECK_OPTIONS[config["precheck"].lower()]
         config["answer"] = self.answer
-        config["answer_lines"] = len(self.answer.splitlines()) + 1
+        config["answerlines"] = len(self.answer.splitlines()) + 1
         config["images"] = self.images
-        config["support_files"] = self.support_files
+        config["supportfiles"] = self.support_files
         return config
 
     @cached_property

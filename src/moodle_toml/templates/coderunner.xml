@@ -15,7 +15,8 @@
         {% endfor %}
     </questiontext>
     <answer><![CDATA[{{ answer }}]]></answer>
-    <answerboxlines>{{ answer_lines }}</answerboxlines>
+    <answerboxlines>{{ answerlines }}</answerboxlines>
+    <answerpreload><![CDATA[{{ answerpreload }}]]></answerpreload>
     <generalfeedback format="html">
         <text></text>
     </generalfeedback>
@@ -29,7 +30,6 @@
     <hidecheck>0</hidecheck>
     <showsource>0</showsource>
     <answerboxcolumns>100</answerboxcolumns>
-    <answerpreload></answerpreload>
     <globalextra></globalextra>
     <useace></useace>
     <resultcolumns></resultcolumns>
@@ -81,7 +81,7 @@
                 </extra>
             </testcase>
         {% endfor %}
-        {% for file in support_files %}
+        {% for file in supportfiles %}
             <file
                     name="{{ file.name }}"
                     path="/"
