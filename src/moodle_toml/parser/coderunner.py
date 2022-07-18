@@ -16,6 +16,7 @@ class Coderunner(Question):
     _XML_NAME = "coderunner.xml"
     _ANSWER = "answer.py"
     _SUPPORT_FILES = "support_files"
+    _TEMPLATE = "template.txt"
     _CODERUNNER_INLINE_IMG_FORMAT = "@@PLUGINFILE@@/{}"
 
     _PRECHECK_OPTIONS = {
@@ -42,6 +43,7 @@ class Coderunner(Question):
         config["answerlines"] = len(self.answer.splitlines()) + 1
         config["images"] = self.images
         config["supportfiles"] = self.support_files
+        config["template"] = self.template
         return config
 
     @cached_property
@@ -70,6 +72,13 @@ class Coderunner(Question):
                 "data": data.decode(),
             })
         return file_data
+
+    @cached_property
+    def template(self) -> str | None:
+        path = Path(self.question_dir / self._TEMPLATE)
+        if path.exists():
+            with open(path, "r") as f:
+                return f.read()
 
     def _transform_images(self, prompt: Soup):
         soup = Soup(str(prompt), "html.parser")
