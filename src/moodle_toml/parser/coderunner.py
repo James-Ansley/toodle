@@ -44,6 +44,8 @@ class Coderunner(Question):
         config["images"] = self.images
         config["supportfiles"] = self.support_files
         config["template"] = self.template
+        for testcase in config["testcases"]:
+            testcase["example"] = int(testcase["example"])
         return config
 
     @cached_property

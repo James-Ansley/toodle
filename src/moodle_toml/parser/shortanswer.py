@@ -12,5 +12,6 @@ class ShortAnswer(Question):
     @cached_property
     def config(self) -> dict[str, Any]:
         config = super().config
+        config["name"] = self.name
         config['case_sensitivity'] = int(config['case_sensitivity'])
         return config

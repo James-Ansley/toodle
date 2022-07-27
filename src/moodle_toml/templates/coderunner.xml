@@ -11,7 +11,8 @@
                     name="{{ image.name }}"
                     path="/"
                     encoding="base64"
-            >{{ image.data }}</file>
+            >{{ image.data }}
+            </file>
         {% endfor %}
     </questiontext>
     <answer><![CDATA[{{ answer }}]]></answer>
@@ -33,7 +34,8 @@
     <globalextra></globalextra>
     <useace></useace>
     <resultcolumns></resultcolumns>
-    <template>{% if template is not none %}<![CDATA[{{ template }}]]>{% endif %}</template>
+    <template>{% if template is not none %}<![CDATA[{{ template }}]]>{% endif %}
+    </template>
     <iscombinatortemplate></iscombinatortemplate>
     <allowmultiplestdins></allowmultiplestdins>
     <validateonsave>1</validateonsave>
@@ -62,7 +64,8 @@
     <giveupallowed>0</giveupallowed>
     <testcases>
         {% for testcase in testcases %}
-            <testcase testtype="0" useasexample="{example}" hiderestiffail="0"
+            <testcase testtype="0" useasexample="{{ testcase.example }}"
+                      hiderestiffail="0"
                       mark="1.0">
                 <display>
                     <text>{{ testcase.display }}</text>
@@ -86,7 +89,8 @@
                     name="{{ file.name }}"
                     path="/"
                     encoding="base64"
-            >{{ file.data }}</file>
+            >{{ file.data }}
+            </file>
         {% endfor %}
     </testcases>
     <tags>
