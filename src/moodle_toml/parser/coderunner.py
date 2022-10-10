@@ -53,7 +53,7 @@ class Coderunner(Question):
             return []
         file_data = []
         for file in os.listdir(self.support_file_dir):
-            path = self.support_file_dir / file.decode()
+            path = self.support_file_dir / file
             with open(path, "rb") as f:
                 data = b64encode(f.read())
             file_data.append({
