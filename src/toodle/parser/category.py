@@ -1,7 +1,6 @@
 from pathlib import Path
 
-from moodle_toml.templates import TEMPLATE_ENVIRONMENT
-from moodle_toml.templates.serializable import Serializable
+from toodle.templates import TEMPLATE_ENVIRONMENT, Serializable
 
 
 __all__ = ["Category"]

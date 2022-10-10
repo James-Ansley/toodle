@@ -1,28 +1,28 @@
-# Moodle TOML
+# Toodle
 
-Moodle TOML is a small transpiler that converts human-readable text and TOML
+Toodle (toml moodle) is a small transpiler that converts human-readable text and TOML
 file formats representing Moodle questions to Moodle XML.
 
-Moodle TOML also supports the Coderunner question type.
+Toodle also supports the Coderunner question type.
 
-> Note: Moodle TOML is in alpha and significant API changes are likely.
+> Note: Toodle is in alpha and significant API changes are likely.
 > Currently, only Coderunner python questions and short answers are supported
 
 ## Install
 
-    pip install moodle-toml
+    pip install toodle
 
 ## Usage
 
-Moodle TOML provides a `parser.Quiz` class that takes the Path of a question
-suite. Calling `as_xml` on the resulting `Quiz` object will parse the directory
+Toodle provides a `Quiz` class that takes the Path of a question
+suite. Calling `to_xml` on the resulting `Quiz` object will parse the directory
 as XML. A question suite is a directory structure where non-question directories
 are treated as categories, and questions are directories containing several
 text-based configuration files. These formats are described below.
 
 ### Categories
 
-Moodle TOML relies on parsing directory trees to determine question categories.
+Toodle relies on parsing directory trees to determine question categories.
 Each non-question directory is treated as a category. For example, if given the
 following directory structure:
 
@@ -41,7 +41,7 @@ questions
             └── ...
 ```
 
-Moodle TOML would generate a Moodle XML file containing a top-level category
+Toodle would generate a Moodle XML file containing a top-level category
 "revision" which would contain two sub-categories "programming" and "tracing"
 and so on. The root directory "questions" is not considered a category.
 
@@ -230,12 +230,11 @@ Calling the following python program:
 ```python
 from pathlib import Path
 
-from moodle_toml.parser import Quiz
+from toodle import Quiz
 
-root = Path("questions")
-xml = Quiz(root).as_xml()
-with open("import.xml", "w") as f:
-    f.write(xml)
+quiz = Quiz(Path("questions"))
+with open("out/test.xml", "w") as f:
+    f.write(quiz.to_xml())
 ```
 
 Would generate the following Moodle XML:

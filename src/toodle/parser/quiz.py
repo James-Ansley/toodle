@@ -6,11 +6,8 @@ from pathlib import Path
 import tomli
 
 from .category import Category
-from .coderunner import Coderunner
-from .question import Question
-from .short_answer import ShortAnswer
-from moodle_toml.templates import TEMPLATE_ENVIRONMENT
-from moodle_toml.templates.serializable import Serializable
+from .questions import *
+from toodle.templates import TEMPLATE_ENVIRONMENT, Serializable
 
 
 __all__ = ["Quiz"]
