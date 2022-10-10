@@ -113,7 +113,7 @@ class Question(Serializable, abc.ABC):
         for image in self.img_paths:
             with open(image, "rb") as f:
                 data = b64encode(f.read())
-            images.append({"name": image.stem, "data": data.decode()})
+            images.append({"name": image.name, "data": data.decode()})
         return images
 
     def to_xml(self):
