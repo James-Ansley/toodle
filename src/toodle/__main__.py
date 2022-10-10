@@ -10,8 +10,11 @@ app = typer.Typer(
 )
 
 
-@app.command("make")
-def make(
+@app.command(
+    "build",
+    help="Transpiles questions to Moodle XML",
+)
+def build(
         root: Path = Argument(
             ...,
             help="The root directory of questions to be transpiled"
@@ -23,16 +26,31 @@ def make(
         ),
         include: list[str] = Option(
             ["*"],
-            help="Glob patterns to select "
-                 "questions/categories in root",
+            help="Glob patterns to select questions/categories in root",
         ),
         exclude: list[str] = Option(
             [],
-            help="Glob patterns to exclude "
-                 "questions/categories in root"
+            help="Glob patterns to exclude questions/categories in root"
         )
 ):
-    cli.make(root, out, include, exclude)
+    cli.build(root, out, include, exclude)
+
+
+@app.command(
+    "new",
+    help="Generates a blank question template in the current working directory",
+)
+def new(
+        qtype: str = Argument(
+            ...,
+            help="The question type to generate"
+        ),
+        name: str = Argument(
+            ...,
+            help="The name of the question to generate"
+        ),
+):
+    cli.new(qtype, name)
 
 
 app()
