@@ -3,7 +3,15 @@
         <text>{{ name }}</text>
     </name>
     <questiontext format="html">
-        <text><![CDATA[{{ prompt }}]]></text>
+        <text><![CDATA[{{ prompt|safe }}]]></text>
+        {% for image in images %}
+            <file
+                    name="{{ image.name }}"
+                    path="/"
+                    encoding="base64"
+            >{{ image.data }}
+            </file>
+        {% endfor %}
     </questiontext>
     <usecase>{{ case_sensitivity }}</usecase>
     <generalfeedback format="html">
@@ -14,18 +22,18 @@
     <hidden>0</hidden>
     <idnumber></idnumber>
     {% for answer in answers %}
-    <answer fraction="{{ answer.grade }}" format="html">
-        <text>{{ answer.text }}</text>
-        <feedback format="html">
-            <text>{{ answer.feedback }}</text>
-        </feedback>
-    </answer>
+        <answer fraction="{{ answer.grade }}" format="html">
+            <text>{{ answer.text }}</text>
+            <feedback format="html">
+                <text>{{ answer.feedback }}</text>
+            </feedback>
+        </answer>
     {% endfor %}
     <tags>
         {% for tag in tags %}
-        <tag>
-            <text>{{ tag }}</text>
-        </tag>
+            <tag>
+                <text>{{ tag }}</text>
+            </tag>
         {% endfor %}
     </tags>
 </question>

@@ -1,24 +1,23 @@
-from functools import cached_property
-from typing import Any
+from pathlib import Path
 
-from .question import Question
+from moodle_toml.templates import TEMPLATE_ENVIRONMENT
+from moodle_toml.templates.serializable import Serializable
+
 
 __all__ = ["Category"]
 
 
-class Category(Question):
-    _XML_NAME = "category.xml"
-
-    def __init__(self, *args, root, **kwargs):
-        super().__init__(*args, **kwargs)
+class Category(Serializable):
+    def __init__(self, root: Path):
         self.root = root
 
-    @cached_property
-    def config(self) -> dict[str, Any]:
-        root_parts = self.root.parts
-        parts = self.question_dir.parts[len(root_parts):]
-        return {"category_name": "/".join(parts)}
+    @property
+    def template_name(self) -> str:
+        return "category.xml"
 
-    @cached_property
-    def prompt(self):
-        return None
+    def to_xml(self):
+        """Compiles question object to Moodle XML"""
+        template = TEMPLATE_ENVIRONMENT.get_template(self.template_name)
+        return template.render(
+            category_name=self.root.name, trim_blocks=True, lstrip_blocks=True
+        )

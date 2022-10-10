@@ -5,7 +5,7 @@
     <coderunnertype>{{ coderunnertype }}</coderunnertype>
     <precheck>{{ precheck }}</precheck>
     <questiontext format="html">
-        <text><![CDATA[{{ prompt }}]]></text>
+        <text><![CDATA[{{ prompt|safe }}]]></text>
         {% for image in images %}
             <file
                     name="{{ image.name }}"
