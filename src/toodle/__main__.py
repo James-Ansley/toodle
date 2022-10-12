@@ -43,11 +43,11 @@ def build(
 def new(
         qtype: str = Argument(
             ...,
-            help="The question type to generate"
+            help="The question type to generate",
         ),
         name: str = Argument(
             ...,
-            help="The name of the question to generate"
+            help="The name of the question to generate",
         ),
 ):
     cli.new(qtype, name)

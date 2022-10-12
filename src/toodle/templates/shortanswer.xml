@@ -18,7 +18,7 @@
         <text></text>
     </generalfeedback>
     <defaultgrade>1.0000000</defaultgrade>
-    <penalty>0.2500000</penalty>
+    <penalty>{{ penalty }}</penalty>
     <hidden>0</hidden>
     <idnumber></idnumber>
     {% for answer in answers %}

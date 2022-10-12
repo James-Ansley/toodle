@@ -17,11 +17,11 @@
         <text></text>
     </generalfeedback>
     <defaultgrade>1</defaultgrade>
-    <penalty>0.3333333</penalty>
+    <penalty>{{ penalty }}</penalty>
     <hidden>0</hidden>
     <idnumber></idnumber>
     <single>true</single>
-    <shuffleanswers>true</shuffleanswers>
+    <shuffleanswers>{{ shuffleanswers|lower }}</shuffleanswers>
     <answernumbering>none</answernumbering>
     <showstandardinstruction>0</showstandardinstruction>
     <correctfeedback format="html">

@@ -27,7 +27,7 @@ class Quiz(Serializable):
             root: Path,
             *,
             glob: Iterable[str] = ("*",),
-            exclude: Iterable[str] = ("",),
+            exclude: Iterable[str] = tuple(),
     ):
         """
         :param root: the root directory questions will be parsed from
@@ -46,7 +46,7 @@ class Quiz(Serializable):
         questions = self._walk_questions()
         return template.render(data=(q.to_xml() for q in questions))
 
-    def _walk_questions(self) -> Generator[Serializable, None, None]:
+    def _walk_questions(self) -> Iterable[Serializable]:
         for dirpath, dirnames, filenames in os.walk(self.root):
             path = Path(dirpath)
             is_match = any(fnmatch(path.as_posix(), g) for g in self.glob)
@@ -70,6 +70,8 @@ def _make_question(root: Path) -> Question:
     match qtype:
         case "shortanswer":
             return ShortAnswer(root, config_cache=data)
+        case "multichoice":
+            return MultiChoice(root, config_cache=data)
         case "coderunner":
             return Coderunner(root, config_cache=data)
         case _:
