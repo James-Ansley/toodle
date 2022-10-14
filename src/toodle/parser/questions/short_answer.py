@@ -12,6 +12,5 @@ class ShortAnswer(Question):
     def template_name(self) -> str:
         return "shortanswer.xml"
 
-    def question_data(self) -> Mapping[str, Any]:
-        data = super().question_data()
-        return data | {'case_sensitivity': int(data['case_sensitivity'])}
+    def _question_data(self) -> Mapping[str, Any]:
+        return {'case_sensitivity': int(self.config()['case_sensitivity'])}

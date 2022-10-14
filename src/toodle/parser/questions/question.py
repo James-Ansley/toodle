@@ -9,10 +9,9 @@ import tomli
 from bs4 import BeautifulSoup as Soup
 from markdown import markdown
 
-from toodle.templates import TEMPLATE_ENVIRONMENT, Serializable
+from toodle.templates import Serializable, TEMPLATE_ENVIRONMENT
 
 __all__ = ["Question"]
-
 
 _IMG_SRC_FMT = "@@PLUGINFILE@@/{}"
 
@@ -78,16 +77,27 @@ class Question(Serializable, abc.ABC):
         (root directory name for question), the prompt as an HTML string,
         and a list of images associated with the question prompt.
         """
-        return self.config() | {
-            "name": self.root.name,
-            "prompt": self.prompt(),
-            "images": self.images(),
-        }
+        return (
+                self.config()
+                | {
+                    "name": self.root.name,
+                    "prompt": self.prompt(),
+                    "images": self.images(),
+                }
+                | self._question_data()
+        )
+
+    @abc.abstractmethod
+    def _question_data(self) -> Mapping[str, Any]:
+        """
+        Returns question type-specific data.
+        Values returned in this mapping will override those defined by default
+        in the public question_data method
+        """
 
     def config(self) -> Mapping[str, Any]:
         """
-        A mapping of config names to values
-        uses cached config if available
+        A mapping of config names to values. Uses cached config if available
         """
         if self._config_cache is None:
             with open(self.conf_path, "rb") as f:
@@ -106,7 +116,7 @@ class Question(Serializable, abc.ABC):
     def images(self) -> list[Mapping[str, str]]:
         """
         Returns a list of images mapping image names and base 64 encoded
-        image strings of the form {"name": ..., "data": ...}
+        image data of the form {"name": ..., "data": ...}
         """
         images = []
         for image in self.img_paths:

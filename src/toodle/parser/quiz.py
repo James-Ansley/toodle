@@ -1,14 +1,13 @@
 import os
-from collections.abc import Generator, Iterable
+from collections.abc import Iterable
 from fnmatch import fnmatch
 from pathlib import Path
 
 import tomli
 
+from toodle.templates import Serializable, TEMPLATE_ENVIRONMENT
 from .category import Category
 from .questions import *
-from toodle.templates import TEMPLATE_ENVIRONMENT, Serializable
-
 
 __all__ = ["Quiz"]
 
@@ -31,7 +30,8 @@ class Quiz(Serializable):
     ):
         """
         :param root: the root directory questions will be parsed from
-        :param glob: optional glob pattern that matches
+        :param glob: optional glob patterns to select paths/files to bundle
+        :param exclude: optional glob patterns to exclude paths/files
         """
         self.root = root
         self.glob = list(glob)
@@ -53,7 +53,7 @@ class Quiz(Serializable):
             is_excluded = any(fnmatch(path.as_posix(), g) for g in self.exclude)
             if path == self.root or is_excluded or not is_match:
                 continue
-            if "config.toml" in filenames:
+            if Question.CONFIG_FILENAME in filenames:
                 dirnames[:] = []
                 yield _make_question(path)
             else:
@@ -66,7 +66,8 @@ def _make_question(root: Path) -> Question:
     with open(conf_path, "rb") as f:
         data = tomli.load(f)
 
-    qtype = data["qtype"]
+    qtype = data.get("qtype", None)
+    # TODO – Dynamic question registration
     match qtype:
         case "shortanswer":
             return ShortAnswer(root, config_cache=data)
@@ -74,5 +75,8 @@ def _make_question(root: Path) -> Question:
             return MultiChoice(root, config_cache=data)
         case "coderunner":
             return Coderunner(root, config_cache=data)
+        case None:
+            raise ValueError("Invalid question configuration. "
+                             f"{conf_path} has no qtype field")
         case _:
             raise ValueError(f"Unrecognised qtype, '{qtype}', in {conf_path}")

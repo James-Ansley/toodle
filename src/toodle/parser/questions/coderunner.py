@@ -62,22 +62,19 @@ class Coderunner(Question):
             })
         return file_data
 
-    def question_data(self) -> Mapping[str, Any]:
-        data = super().question_data()
+    def _question_data(self) -> Mapping[str, Any]:
         answer = self.answer()
-        return (
-                data
-                | {
-                    "precheck": _parse_precheck(data["precheck"]),
-                    "answer": answer,
-                    "answerlines": answer.count("\n") + 1,
-                    "supportfiles": self.support_files(),
-                    "testcases": [
-                        case | {"example": int(case["example"])}
-                        for case in data["testcases"]
-                    ]
-                }
-        )
+        config = self.config()
+        return {
+            "precheck": _parse_precheck(config["precheck"]),
+            "answer": answer,
+            "answerlines": answer.count("\n") + 1,
+            "supportfiles": self.support_files(),
+            "testcases": [
+                case | {"example": int(case["example"])}
+                for case in config["testcases"]
+            ]
+        }
 
 
 def _parse_precheck(precheck_data: str) -> int:
