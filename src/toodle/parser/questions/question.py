@@ -1,6 +1,6 @@
 import abc
 from base64 import b64encode
-from collections.abc import Generator, Mapping
+from collections.abc import Iterator, Mapping
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote
@@ -62,7 +62,7 @@ class Question(Serializable, abc.ABC):
         return self.root / "images"
 
     @property
-    def img_paths(self) -> Generator[Path, None, None]:
+    def img_paths(self) -> Iterator[Path]:
         """
         Yields paths to all files contained within the images directory.
         Returns an empty generator in the case no such directory exists.

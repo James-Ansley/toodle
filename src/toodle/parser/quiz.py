@@ -1,5 +1,5 @@
 import os
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator
 from fnmatch import fnmatch
 from pathlib import Path
 
@@ -46,7 +46,7 @@ class Quiz(Serializable):
         questions = self._walk_questions()
         return template.render(data=(q.to_xml() for q in questions))
 
-    def _walk_questions(self) -> Iterable[Serializable]:
+    def _walk_questions(self) -> Iterator[Serializable]:
         for dirpath, dirnames, filenames in os.walk(self.root):
             path = Path(dirpath)
             is_match = any(fnmatch(path.as_posix(), g) for g in self.glob)
