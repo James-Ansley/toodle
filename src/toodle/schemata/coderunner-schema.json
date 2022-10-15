@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/James-Ansley/toodle/blob/main/src/toodle/schemata/coderunner-schema.json",
+  "$id": "https://raw.githubusercontent.com/James-Ansley/toodle/main/src/toodle/schemata/coderunner-schema.json",
   "title": "Coderunner Question",
   "description": "A Coderunner Question Config",
   "type": "object",
