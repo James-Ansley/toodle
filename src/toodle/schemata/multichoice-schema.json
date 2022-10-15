@@ -1,16 +1,16 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://raw.githubusercontent.com/James-Ansley/toodle/main/src/toodle/schemata/shortanswer-schema.json",
-  "title": "ShortAnswer Question",
-  "description": "A Coderunner Question Config",
+  "$id": "https://raw.githubusercontent.com/James-Ansley/toodle/main/src/toodle/schemata/multichoice-schema.json",
+  "title": "MultiChoice Question",
+  "description": "A Multi-Choice Question Config",
   "type": "object",
-  "required": ["qtype", "casesensitivity", "penalty", "answers"],
+  "required": ["qtype", "shuffleanswers", "penalty", "answers"],
   "properties": {
     "qtype": {
       "description": "The question type",
       "type": "string",
       "enum": [
-        "shortanswer"
+        "multichoice"
       ]
     },
     "tags": {
