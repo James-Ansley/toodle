@@ -11,6 +11,12 @@
       "type": "string",
       "enum": ["coderunner"]
     },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "coderunnertype": {
       "type": "string",
       "description": "The Coderunner question prototype",

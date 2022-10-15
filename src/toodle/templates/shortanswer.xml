@@ -13,7 +13,7 @@
             </file>
         {% endfor %}
     </questiontext>
-    <usecase>{{ case_sensitivity }}</usecase>
+    <usecase>{{ casesensitivity }}</usecase>
     <generalfeedback format="html">
         <text></text>
     </generalfeedback>
