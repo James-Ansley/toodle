@@ -68,7 +68,7 @@
                       hiderestiffail="0"
                       mark="1.0">
                 <display>
-                    <text>{{ testcase.display }}</text>
+                    <text>{{ testcase.display|upper }}</text>
                 </display>
                 <testcode>
                     <text>{{ testcase.testcode }}</text>

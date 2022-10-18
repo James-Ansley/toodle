@@ -2,7 +2,7 @@ import os
 from base64 import b64encode
 from collections.abc import Mapping
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 
 from . import Question
 
@@ -44,23 +44,18 @@ class Coderunner(Question):
         with open(self.ans_path) as f:
             return f.read()
 
-    def support_files(self) -> list[Mapping[str, str]]:
+    def support_files(self) -> Iterator[Mapping[str, str]]:
         """
         A list of support files as a mapping in the form:
         {"name": str, "data": str}
         """
         if not self.support_file_dir.exists():
-            return []
-        file_data = []
+            return
         for file in os.listdir(self.support_file_dir):
             path = self.support_file_dir / file
             with open(path, "rb") as f:
                 data = b64encode(f.read())
-            file_data.append({
-                "name": path.name,
-                "data": data.decode(),
-            })
-        return file_data
+            yield {"name": path.name, "data": data.decode()}
 
     def _question_data(self) -> Mapping[str, Any]:
         answer = self.answer()

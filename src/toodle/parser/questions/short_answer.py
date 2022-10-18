@@ -13,4 +13,4 @@ class ShortAnswer(Question):
         return "shortanswer.xml"
 
     def _question_data(self) -> Mapping[str, Any]:
-        return {'case_sensitivity': int(self.config()['case_sensitivity'])}
+        return {'casesensitivity': int(self.config()['casesensitivity'])}

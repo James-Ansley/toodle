@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/James-Ansley/toodle/main/src/toodle/schemata/question-schema.json",
+  "title": "Question Schema",
+  "description": "Config.toml schema",
+  "type": "object",
+  "required": [
+    "qtype",
+    "testcases"
+  ],
+  "properties": {
+    "qtype": {
+      "description": "The question type",
+      "type": "string",
+      "enum": [
+        "coderunner",
+        "shortanswer",
+        "multichoice"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "anyOf": [
+    {
+      "if": {
+        "properties": {
+          "qtype": {
+            "const": "coderunner"
+          }
+        }
+      },
+      "then": {
+        "$ref": "./coderunner-schema.json"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "qtype": {
+            "const": "shortanswer"
+          }
+        }
+      },
+      "then": {
+        "$ref": "./shortanswer-schema.json"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "qtype": {
+            "const": "multichoice"
+          }
+        }
+      },
+      "then": {
+        "$ref": "./multichoice-schema.json"
+      }
+    }
+  ]
+}

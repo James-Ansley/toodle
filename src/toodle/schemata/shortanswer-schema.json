@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://raw.githubusercontent.com/James-Ansley/toodle/main/src/toodle/schemata/shortanswer-schema.json",
   "title": "ShortAnswer Question",
-  "description": "A Coderunner Question Config",
+  "description": "A Short Answer Question Config",
   "type": "object",
   "required": ["qtype", "casesensitivity", "penalty", "answers"],
   "properties": {
