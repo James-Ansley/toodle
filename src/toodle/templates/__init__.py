@@ -1,14 +1,17 @@
+from functools import lru_cache
 from pathlib import Path
 
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Template
 
 from .serializable import Serializable
 
-__all__ = ["Serializable", "TEMPLATE_ENVIRONMENT"]
+__all__ = ["Serializable", "get_template"]
 
-template_path = Path(__file__).parent
 
-TEMPLATE_ENVIRONMENT = Environment(
-    loader=FileSystemLoader(searchpath=template_path),
-    autoescape=True,
-)
+@lru_cache
+def get_template(path: Path):
+    with open(path, "r") as f:
+        data = f.read()
+    return Template(
+        source=data, autoescape=True, trim_blocks=True, lstrip_blocks=True,
+    )

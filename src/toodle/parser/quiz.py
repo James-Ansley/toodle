@@ -5,22 +5,17 @@ from pathlib import Path
 
 import tomli
 
-from toodle.templates import Serializable, TEMPLATE_ENVIRONMENT
+from toodle.templates import Serializable, get_template
 from .category import Category
 from .questions import *
+from toodle.utils.logutils import log, log_tree
 
 __all__ = ["Quiz"]
 
+from ..qdata import QDATA_ROOT
+
 
 class Quiz(Serializable):
-    """
-    A quiz transpiler.
-
-    For some unknown reason, Moodle "quizzes" are not the same as "quizzes"
-    used in Moodle XML. Here, a quiz is a container for questions and
-    categories used in the XML – NOT a "quiz" activity within a course.
-    """
-
     def __init__(
             self,
             root: Path,
@@ -29,6 +24,12 @@ class Quiz(Serializable):
             exclude: Iterable[str] = tuple(),
     ):
         """
+        A quiz transpiler.
+
+        For some unknown reason, Moodle "quizzes" are not the same as "quizzes"
+        used in Moodle XML. Here, a quiz is a container for questions and
+        categories used in the XML – NOT a "quiz" activity within a course.
+
         :param root: the root directory questions will be parsed from
         :param glob: optional glob patterns to select paths/files to bundle
         :param exclude: optional glob patterns to exclude paths/files
@@ -37,15 +38,13 @@ class Quiz(Serializable):
         self.glob = list(glob)
         self.exclude = list(exclude)
 
-    @property
-    def template_name(self) -> str:
-        return "quiz.xml"
-
     def to_xml(self):
-        template = TEMPLATE_ENVIRONMENT.get_template(self.template_name)
+        template_path = QDATA_ROOT / "quiz" / "template.xml"
+        template = get_template(template_path)
         questions = self._walk_questions()
         return template.render(data=(q.to_xml() for q in questions))
 
+    @log(on_enter="Found the Following:")
     def _walk_questions(self) -> Iterator[Serializable]:
         for dirpath, dirnames, filenames in os.walk(self.root):
             path = Path(dirpath)
@@ -55,8 +54,10 @@ class Quiz(Serializable):
                 continue
             if Question.CONFIG_FILENAME in filenames:
                 dirnames[:] = []
+                log_tree(f"Question: {path.name}", self.root, path)
                 yield _make_question(path)
             else:
+                log_tree(f"Category: {path.name}:", self.root, path)
                 yield Category(path)
 
 
@@ -70,11 +71,11 @@ def _make_question(root: Path) -> Question:
     # TODO – Dynamic question registration
     match qtype:
         case "shortanswer":
-            return ShortAnswer(root, config_cache=data)
+            return ShortAnswer(root, config=data)
         case "multichoice":
-            return MultiChoice(root, config_cache=data)
+            return MultiChoice(root, config=data)
         case "coderunner":
-            return Coderunner(root, config_cache=data)
+            return Coderunner(root, config=data)
         case None:
             raise ValueError("Invalid question configuration. "
                              f"{conf_path} has no qtype field")

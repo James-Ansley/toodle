@@ -4,10 +4,13 @@ import typer
 from typer import Argument, Option
 
 from toodle import cli
+from toodle.utils import logutils
 
 app = typer.Typer(
     add_completion=False,
 )
+
+logutils.attach()
 
 
 @app.command(

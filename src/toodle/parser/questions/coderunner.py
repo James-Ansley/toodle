@@ -19,25 +19,21 @@ _PRECHECK_OPTIONS = {
 
 class Coderunner(Question):
     @property
-    def template_name(self) -> str:
-        return "coderunner.xml"
-
-    @property
     def ans_path(self) -> Path:
         """
         The path to the Coderunner answer.py file
 
         :raises FileNotFoundError: if the answer file cannot be found
         """
-        path = self.root / "answer.py"
+        path = self._root / "answer.py"
         if not path.is_file():
-            raise FileNotFoundError(f"answer.py file not found for {self.root}")
+            raise FileNotFoundError(f"answer.py file not found in {self._root}")
         return path
 
     @property
-    def support_file_dir(self) -> Path:
+    def support_file_dir(self) -> Path[str]:
         """The path to the support files – may or may not exist"""
-        return self.root / "files"
+        return self._root / "files"
 
     def answer(self):
         """The contents of answer.py"""
