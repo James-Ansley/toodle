@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "shortanswer.schema.json",
+  "title": "Short Answer Choice Question",
+  "description": "Short Answer Question Info",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "question.schema.json"
+    }
+  ],
+  "required": [
+    "penalty",
+    "answers",
+    "casesensitivity"
+  ],
+  "properties": {
+    "casesensitivity": {
+      "type": "integer",
+      "description": "Whether answers are case sensitive",
+      "enum": [
+        0,
+        1
+      ]
+    },
+    "penalty": {
+      "type": "number",
+      "description": "Penalty to apply for each incorrect attempt",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "answers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The answer text. Use * for a wildcard character"
+          },
+          "grade": {
+            "type": "number",
+            "description": "Grade awarded to this answer. At least one must be 100",
+            "minimum": -100,
+            "maximum": 100
+          },
+          "feedback": {
+            "$ref": "components/markup.schema.json"
+          }
+        }
+      },
+      "contains": {
+        "type": "object",
+        "properties": {
+          "grade": {
+            "const": 100
+          }
+        }
+      }
+    }
+  }
+}

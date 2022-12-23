@@ -1,0 +1,47 @@
+{% from "img.xml" import image_files -%}
+
+<question type="multichoice">
+    <name>
+        <text>{{ name }}</text>
+    </name>
+    <questiontext format="{{ prompt.format }}">
+        <text><![CDATA[{{ prompt.text|safe }}]]></text>
+        {{ image_files(prompt.images) }}
+    </questiontext>
+    <generalfeedback format="html">
+        <text></text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>{{ penalty }}</penalty>
+    <hidden>0</hidden>
+    <idnumber>{{ idnumber }}</idnumber>
+    <single>{{ single|lower }}</single>
+    <shuffleanswers>{{ shuffleanswers|lower }}</shuffleanswers>
+    <answernumbering>{{ numbering }}</answernumbering>
+    <showstandardinstruction>0</showstandardinstruction>
+    <correctfeedback format="html">
+        <text>Your answer is correct.</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+        <text>Your answer is partially correct.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+        <text>Your answer is incorrect.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+    {% for answer in answers %}
+    <answer fraction="{{ answer.grade }}" format="{{ answer.format }}">
+        <text><![CDATA[{{ answer.text | safe }}]]></text>
+        {{ image_files(answer.images) }}
+        <feedback format="{{ answer.feedback.format if answer.feedback is defined }}">
+            <text><![CDATA[{{ answer.feedback.text | safe if answer.feedback is defined }}]]></text>
+            {{ image_files(answer.feedback.images) if answer.feedback is defined }}
+        </feedback>
+    </answer>
+    {% endfor %}
+    <tags>
+        {% for tag in tags %}
+        <tag><text>{{ tag }}</text></tag>
+        {% endfor %}
+    </tags>
+</question>

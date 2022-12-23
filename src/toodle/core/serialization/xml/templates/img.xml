@@ -1,0 +1,7 @@
+{% macro image_files(images) %}
+{% for image in images %}
+<file name="{{ image.name }}" path="/" encoding="base64">
+    {{ image.data }}
+</file>
+{% endfor %}
+{% endmacro %}

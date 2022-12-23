@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "coderunner.schema.json",
+  "title": "Coderunner Question",
+  "description": "Coderunner Question Info",
+  "type": "object",
+  "required": [
+    "coderunnertype",
+    "precheck",
+    "testcases"
+  ],
+  "allOf": [
+    {
+      "$ref": "question.schema.json"
+    }
+  ],
+  "properties": {
+    "coderunnertype": {
+      "type": "string"
+    },
+    "precheck": {
+      "type": "integer",
+      "enum": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "answer": {
+      "type": "string"
+    },
+    "answer_preload": {
+      "type": "string"
+    },
+    "testcases": {
+      "type": "array",
+      "minLength": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "example": {
+            "type": "integer",
+            "enum": [0, 1]
+          },
+          "display": {
+            "type": "string",
+            "enum": [
+              "show",
+              "hide",
+              "hide_if_succeed",
+              "hide_if_fail"
+            ]
+          },
+          "testcode": {
+            "type": "string"
+          },
+          "stdin": {
+            "type": "string"
+          },
+          "expected": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "supportfiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

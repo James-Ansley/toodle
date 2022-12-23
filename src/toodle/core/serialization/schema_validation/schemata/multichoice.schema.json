@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "multichoice.schema.json",
+  "title": "Multiple Choice Question",
+  "description": "MCQ Question Info",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "question.schema.json"
+    }
+  ],
+  "required": [
+    "shuffleanswers",
+    "penalty",
+    "answers"
+  ],
+  "properties": {
+    "shuffleanswers": {
+      "type": "boolean",
+      "description": "Whether choices should be shuffled"
+    },
+    "single": {
+      "type": "boolean",
+      "description": "True if this question is a single answer MCQ, False is a multi-answer MCQ"
+    },
+    "numbering": {
+      "type": "string",
+      "description": "How choices should be labelled",
+      "enum": [
+        "none",
+        "abc",
+        "ABC",
+        "iii",
+        "III"
+      ]
+    },
+    "penalty": {
+      "type": "number",
+      "description": "Penalty to apply for each incorrect attempt",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "answers": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "components/markup.schema.json",
+        "properties": {
+          "grade": {
+            "type": "number",
+            "description": "Grade awarded to this answer. At least one must be 100",
+            "minimum": -100,
+            "maximum": 100
+          },
+          "feedback": {
+            "$ref": "components/markup.schema.json"
+          }
+        }
+      },
+      "contains": {
+        "type": "object",
+        "properties": {
+          "grade": {
+            "const": 100
+          }
+        }
+      }
+    }
+  }
+}

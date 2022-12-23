@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "components/file.schema.json",
+  "title": "File",
+  "description": "A relative file path",
+  "type": "object",
+  "required": [
+    "file"
+  ],
+  "properties": {
+    "file": {
+      "type": "string",
+      "description": "a relative path to the target file"
+    }
+  }
+}

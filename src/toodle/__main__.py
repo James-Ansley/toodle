@@ -4,13 +4,13 @@ import typer
 from typer import Argument, Option
 
 from toodle import cli
-from toodle.utils import logutils
+from toodle.utils import logs
 
 app = typer.Typer(
     add_completion=False,
 )
 
-logutils.attach()
+logs.attach()
 
 
 @app.command(
@@ -40,20 +40,24 @@ def build(
 
 
 @app.command(
-    "new",
-    help="Generates a blank question template in the current working directory",
+    "validate",
+    help="Validates all questions",
 )
-def new(
-        qtype: str = Argument(
+def build(
+        root: Path = Argument(
             ...,
-            help="The question type to generate",
+            help="The root directory of questions to be validated"
         ),
-        name: str = Argument(
-            ...,
-            help="The name of the question to generate",
+        include: list[str] = Option(
+            ["*"],
+            help="Glob patterns to select questions/categories in root",
         ),
+        exclude: list[str] = Option(
+            [],
+            help="Glob patterns to exclude questions/categories in root"
+        )
 ):
-    cli.new(qtype, name)
+    cli.validate(root, include, exclude)
 
 
 app()

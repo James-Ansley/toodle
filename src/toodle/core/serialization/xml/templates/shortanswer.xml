@@ -1,0 +1,33 @@
+{% from "img.xml" import image_files -%}
+<question type="shortanswer">
+    <name>
+        <text>{{ name }}</text>
+    </name>
+    <questiontext format="{{ prompt.format }}">
+        <text><![CDATA[{{ prompt.text | safe }}]]></text>
+        {{ image_files(prompt.images) }}
+    </questiontext>
+    <usecase>{{ casesensitivity }}</usecase>
+    <generalfeedback format="html">
+        <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>{{ penalty }}</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    {% for answer in answers %}
+    <answer fraction="{{ answer.grade }}" format="moodle_auto_format">
+        <text>{{ answer.text }}</text>
+        <feedback format="{{ answer.feedback.format if answer.feedback is defined }}">
+            <text><![CDATA[{{ answer.feedback.text | safe if answer.feedback is defined }}]]></text>
+        </feedback>
+    </answer>
+    {% endfor %}
+    <tags>
+    {% for tag in tags %}
+        <tag>
+            <text>{{ tag }}</text>
+        </tag>
+    {% endfor %}
+    </tags>
+</question>

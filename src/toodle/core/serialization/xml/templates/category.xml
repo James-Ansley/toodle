@@ -1,0 +1,9 @@
+<question type="category">
+    <category>
+        <text>{{ category }}</text>
+    </category>
+    <info format="{{ info.format }}">
+        <text><![CDATA[{{ info.text|safe }}]]></text>
+    </info>
+    <idnumber>{{ idnumber }}</idnumber>
+</question>

@@ -1,2 +1,2 @@
 from .build import build
-from .new import new
+from .validate import validate
