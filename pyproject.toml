@@ -25,7 +25,7 @@ include-package-data = true
 
 [tool.setuptools.package-data]
 "*" = ["*.xml", "*.json"]
-
+"toodle" = ["requirements.txt", "README.md"]
 
 [tool.setuptools.dynamic]
 readme = { file = ["README.md"] }
