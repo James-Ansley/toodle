@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=65.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "toodle"
-version = "1.0.0a7"
+version = "1.0.0a9"
 description = '''
 A small transpiler that converts human-readable text and TOML file formats
 representing Moodle questions to Moodle XML'''
@@ -26,9 +26,10 @@ include-package-data = true
 [tool.setuptools.package-data]
 "*" = ["*.xml", "*.json"]
 
+
 [tool.setuptools.dynamic]
-readme = { file = "README.md" }
-dependencies = { file = "requirements.txt" }
+readme = { file = ["README.md"] }
+dependencies = { file = ["requirements.txt"] }
 
 [tool.setuptools.packages.find]
 where = ["src"]
